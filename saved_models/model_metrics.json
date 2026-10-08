@@ -1,0 +1,713 @@
+{
+  "best_model_name": "Logistic Regression",
+  "models": {
+    "Logistic Regression": {
+      "accuracy": 0.9649,
+      "precision": 0.975,
+      "recall": 0.9286,
+      "sensitivity": 0.9286,
+      "specificity": 0.9861,
+      "f1_score": 0.9512,
+      "roc_auc": 0.996,
+      "confusion_matrix": {
+        "tn": 71,
+        "fp": 1,
+        "fn": 3,
+        "tp": 39,
+        "matrix": [
+          [
+            71,
+            1
+          ],
+          [
+            3,
+            39
+          ]
+        ]
+      },
+      "roc_curve": [
+        {
+          "fpr": 0.0,
+          "tpr": 0.0,
+          "threshold": 1.0
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.0238,
+          "threshold": 1.0
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.9286,
+          "threshold": 0.5762
+        },
+        {
+          "fpr": 0.0139,
+          "tpr": 0.9286,
+          "threshold": 0.5092
+        },
+        {
+          "fpr": 0.0139,
+          "tpr": 0.9762,
+          "threshold": 0.3145
+        },
+        {
+          "fpr": 0.1389,
+          "tpr": 0.9762,
+          "threshold": 0.0668
+        },
+        {
+          "fpr": 0.1389,
+          "tpr": 1.0,
+          "threshold": 0.0614
+        },
+        {
+          "fpr": 1.0,
+          "tpr": 1.0,
+          "threshold": 0.0
+        }
+      ],
+      "fn_analysis": {
+        "false_negatives_count": 3,
+        "false_positives_count": 1,
+        "true_positives_count": 39,
+        "true_negatives_count": 71,
+        "false_negative_rate": 7.14,
+        "sensitivity_percentage": 92.86,
+        "clinical_impact_note": "In clinical screening, False Negatives (predicting Benign when actual is Malignant) carry severe risks of delayed treatment. High Recall / Sensitivity (>95%) minimizes undetected malignant cases."
+      },
+      "cv_roc_auc_mean": 0.9958,
+      "cv_roc_auc_std": 0.0047,
+      "feature_importances": {
+        "mean radius": 0.0205,
+        "mean texture": 0.0273,
+        "mean perimeter": 0.02,
+        "mean area": 0.0249,
+        "mean smoothness": 0.0199,
+        "mean compactness": 0.0249,
+        "mean concavity": 0.0444,
+        "mean concave points": 0.054,
+        "mean symmetry": 0.0093,
+        "mean fractal dimension": 0.0046,
+        "radius error": 0.0699,
+        "texture error": 0.0231,
+        "perimeter error": 0.0424,
+        "area error": 0.0515,
+        "smoothness error": 0.0141,
+        "compactness error": 0.0514,
+        "concavity error": 0.0052,
+        "concave points error": 0.0273,
+        "symmetry error": 0.0187,
+        "fractal dimension error": 0.0337,
+        "worst radius": 0.0509,
+        "worst texture": 0.0813,
+        "worst perimeter": 0.041,
+        "worst area": 0.0511,
+        "worst smoothness": 0.0238,
+        "worst compactness": 0.0098,
+        "worst concavity": 0.0517,
+        "worst concave points": 0.0399,
+        "worst symmetry": 0.0602,
+        "worst fractal dimension": 0.0031
+      }
+    },
+    "Decision Tree": {
+      "accuracy": 0.9211,
+      "precision": 0.9459,
+      "recall": 0.8333,
+      "sensitivity": 0.8333,
+      "specificity": 0.9722,
+      "f1_score": 0.8861,
+      "roc_auc": 0.9448,
+      "confusion_matrix": {
+        "tn": 70,
+        "fp": 2,
+        "fn": 7,
+        "tp": 35,
+        "matrix": [
+          [
+            70,
+            2
+          ],
+          [
+            7,
+            35
+          ]
+        ]
+      },
+      "roc_curve": [
+        {
+          "fpr": 0.0,
+          "tpr": 0.0,
+          "threshold": 1.0
+        },
+        {
+          "fpr": 0.0278,
+          "tpr": 0.8333,
+          "threshold": 1.0
+        },
+        {
+          "fpr": 0.0972,
+          "tpr": 0.9524,
+          "threshold": 0.1111
+        },
+        {
+          "fpr": 0.9722,
+          "tpr": 0.9762,
+          "threshold": 0.0081
+        },
+        {
+          "fpr": 1.0,
+          "tpr": 1.0,
+          "threshold": 0.0
+        }
+      ],
+      "fn_analysis": {
+        "false_negatives_count": 7,
+        "false_positives_count": 2,
+        "true_positives_count": 35,
+        "true_negatives_count": 70,
+        "false_negative_rate": 16.67,
+        "sensitivity_percentage": 83.33,
+        "clinical_impact_note": "In clinical screening, False Negatives (predicting Benign when actual is Malignant) carry severe risks of delayed treatment. High Recall / Sensitivity (>95%) minimizes undetected malignant cases."
+      },
+      "cv_roc_auc_mean": 0.8875,
+      "cv_roc_auc_std": 0.0607,
+      "feature_importances": {
+        "mean radius": 0.0,
+        "mean texture": 0.0307,
+        "mean perimeter": 0.0,
+        "mean area": 0.0236,
+        "mean smoothness": 0.0,
+        "mean compactness": 0.0,
+        "mean concavity": 0.0,
+        "mean concave points": 0.0,
+        "mean symmetry": 0.0,
+        "mean fractal dimension": 0.0,
+        "radius error": 0.0,
+        "texture error": 0.0119,
+        "perimeter error": 0.0,
+        "area error": 0.0119,
+        "smoothness error": 0.0,
+        "compactness error": 0.0,
+        "concavity error": 0.0,
+        "concave points error": 0.0,
+        "symmetry error": 0.0,
+        "fractal dimension error": 0.0,
+        "worst radius": 0.0,
+        "worst texture": 0.0231,
+        "worst perimeter": 0.7612,
+        "worst area": 0.023,
+        "worst smoothness": 0.0261,
+        "worst compactness": 0.0,
+        "worst concavity": 0.0173,
+        "worst concave points": 0.0713,
+        "worst symmetry": 0.0,
+        "worst fractal dimension": 0.0
+      }
+    },
+    "Random Forest": {
+      "accuracy": 0.9737,
+      "precision": 1.0,
+      "recall": 0.9286,
+      "sensitivity": 0.9286,
+      "specificity": 1.0,
+      "f1_score": 0.963,
+      "roc_auc": 0.9929,
+      "confusion_matrix": {
+        "tn": 72,
+        "fp": 0,
+        "fn": 3,
+        "tp": 39,
+        "matrix": [
+          [
+            72,
+            0
+          ],
+          [
+            3,
+            39
+          ]
+        ]
+      },
+      "roc_curve": [
+        {
+          "fpr": 0.0,
+          "tpr": 0.0,
+          "threshold": 1.0
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.4286,
+          "threshold": 1.0
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.5238,
+          "threshold": 0.98
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.6429,
+          "threshold": 0.88
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.7143,
+          "threshold": 0.87
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.9286,
+          "threshold": 0.51
+        },
+        {
+          "fpr": 0.0417,
+          "tpr": 0.9286,
+          "threshold": 0.3
+        },
+        {
+          "fpr": 0.0417,
+          "tpr": 0.9524,
+          "threshold": 0.27
+        },
+        {
+          "fpr": 0.0833,
+          "tpr": 0.9524,
+          "threshold": 0.2
+        },
+        {
+          "fpr": 0.0833,
+          "tpr": 0.9762,
+          "threshold": 0.19
+        },
+        {
+          "fpr": 0.0972,
+          "tpr": 0.9762,
+          "threshold": 0.18
+        },
+        {
+          "fpr": 0.125,
+          "tpr": 0.9762,
+          "threshold": 0.16
+        },
+        {
+          "fpr": 0.1528,
+          "tpr": 0.9762,
+          "threshold": 0.11
+        },
+        {
+          "fpr": 0.1944,
+          "tpr": 1.0,
+          "threshold": 0.1
+        },
+        {
+          "fpr": 0.2083,
+          "tpr": 1.0,
+          "threshold": 0.09
+        },
+        {
+          "fpr": 0.2361,
+          "tpr": 1.0,
+          "threshold": 0.08
+        },
+        {
+          "fpr": 0.2778,
+          "tpr": 1.0,
+          "threshold": 0.05
+        },
+        {
+          "fpr": 0.3333,
+          "tpr": 1.0,
+          "threshold": 0.03
+        },
+        {
+          "fpr": 0.375,
+          "tpr": 1.0,
+          "threshold": 0.02
+        },
+        {
+          "fpr": 0.5278,
+          "tpr": 1.0,
+          "threshold": 0.01
+        },
+        {
+          "fpr": 1.0,
+          "tpr": 1.0,
+          "threshold": 0.0
+        }
+      ],
+      "fn_analysis": {
+        "false_negatives_count": 3,
+        "false_positives_count": 0,
+        "true_positives_count": 39,
+        "true_negatives_count": 72,
+        "false_negative_rate": 7.14,
+        "sensitivity_percentage": 92.86,
+        "clinical_impact_note": "In clinical screening, False Negatives (predicting Benign when actual is Malignant) carry severe risks of delayed treatment. High Recall / Sensitivity (>95%) minimizes undetected malignant cases."
+      },
+      "cv_roc_auc_mean": 0.9889,
+      "cv_roc_auc_std": 0.0067,
+      "feature_importances": {
+        "mean radius": 0.062,
+        "mean texture": 0.0155,
+        "mean perimeter": 0.0771,
+        "mean area": 0.0459,
+        "mean smoothness": 0.0043,
+        "mean compactness": 0.0122,
+        "mean concavity": 0.0508,
+        "mean concave points": 0.0811,
+        "mean symmetry": 0.0051,
+        "mean fractal dimension": 0.0037,
+        "radius error": 0.0145,
+        "texture error": 0.0044,
+        "perimeter error": 0.012,
+        "area error": 0.0291,
+        "smoothness error": 0.0032,
+        "compactness error": 0.0059,
+        "concavity error": 0.0061,
+        "concave points error": 0.0035,
+        "symmetry error": 0.0042,
+        "fractal dimension error": 0.0066,
+        "worst radius": 0.0935,
+        "worst texture": 0.0162,
+        "worst perimeter": 0.0836,
+        "worst area": 0.1514,
+        "worst smoothness": 0.0151,
+        "worst compactness": 0.018,
+        "worst concavity": 0.03,
+        "worst concave points": 0.1265,
+        "worst symmetry": 0.0133,
+        "worst fractal dimension": 0.0049
+      }
+    },
+    "Support Vector Machine": {
+      "accuracy": 0.9737,
+      "precision": 1.0,
+      "recall": 0.9286,
+      "sensitivity": 0.9286,
+      "specificity": 1.0,
+      "f1_score": 0.963,
+      "roc_auc": 0.9947,
+      "confusion_matrix": {
+        "tn": 72,
+        "fp": 0,
+        "fn": 3,
+        "tp": 39,
+        "matrix": [
+          [
+            72,
+            0
+          ],
+          [
+            3,
+            39
+          ]
+        ]
+      },
+      "roc_curve": [
+        {
+          "fpr": 0.0,
+          "tpr": 0.0,
+          "threshold": 1.0
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.0238,
+          "threshold": 1.0
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.9286,
+          "threshold": 0.5939
+        },
+        {
+          "fpr": 0.0139,
+          "tpr": 0.9286,
+          "threshold": 0.5748
+        },
+        {
+          "fpr": 0.0139,
+          "tpr": 0.9524,
+          "threshold": 0.5542
+        },
+        {
+          "fpr": 0.0278,
+          "tpr": 0.9524,
+          "threshold": 0.5
+        },
+        {
+          "fpr": 0.0278,
+          "tpr": 0.9762,
+          "threshold": 0.4418
+        },
+        {
+          "fpr": 0.1806,
+          "tpr": 0.9762,
+          "threshold": 0.0616
+        },
+        {
+          "fpr": 0.1806,
+          "tpr": 1.0,
+          "threshold": 0.0613
+        },
+        {
+          "fpr": 1.0,
+          "tpr": 1.0,
+          "threshold": 0.0003
+        }
+      ],
+      "fn_analysis": {
+        "false_negatives_count": 3,
+        "false_positives_count": 0,
+        "true_positives_count": 39,
+        "true_negatives_count": 72,
+        "false_negative_rate": 7.14,
+        "sensitivity_percentage": 92.86,
+        "clinical_impact_note": "In clinical screening, False Negatives (predicting Benign when actual is Malignant) carry severe risks of delayed treatment. High Recall / Sensitivity (>95%) minimizes undetected malignant cases."
+      },
+      "cv_roc_auc_mean": 0.9948,
+      "cv_roc_auc_std": 0.0046,
+      "feature_importances": {}
+    },
+    "K-Nearest Neighbors": {
+      "accuracy": 0.9561,
+      "precision": 0.9744,
+      "recall": 0.9048,
+      "sensitivity": 0.9048,
+      "specificity": 0.9861,
+      "f1_score": 0.9383,
+      "roc_auc": 0.9823,
+      "confusion_matrix": {
+        "tn": 71,
+        "fp": 1,
+        "fn": 4,
+        "tp": 38,
+        "matrix": [
+          [
+            71,
+            1
+          ],
+          [
+            4,
+            38
+          ]
+        ]
+      },
+      "roc_curve": [
+        {
+          "fpr": 0.0,
+          "tpr": 0.0,
+          "threshold": 1.0
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.6905,
+          "threshold": 1.0
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.7857,
+          "threshold": 0.8
+        },
+        {
+          "fpr": 0.0139,
+          "tpr": 0.9048,
+          "threshold": 0.6
+        },
+        {
+          "fpr": 0.0278,
+          "tpr": 0.9048,
+          "threshold": 0.4
+        },
+        {
+          "fpr": 0.0833,
+          "tpr": 0.9762,
+          "threshold": 0.2
+        },
+        {
+          "fpr": 1.0,
+          "tpr": 1.0,
+          "threshold": 0.0
+        }
+      ],
+      "fn_analysis": {
+        "false_negatives_count": 4,
+        "false_positives_count": 1,
+        "true_positives_count": 38,
+        "true_negatives_count": 71,
+        "false_negative_rate": 9.52,
+        "sensitivity_percentage": 90.48,
+        "clinical_impact_note": "In clinical screening, False Negatives (predicting Benign when actual is Malignant) carry severe risks of delayed treatment. High Recall / Sensitivity (>95%) minimizes undetected malignant cases."
+      },
+      "cv_roc_auc_mean": 0.9871,
+      "cv_roc_auc_std": 0.0137,
+      "feature_importances": {}
+    },
+    "Gradient Boosting": {
+      "accuracy": 0.9649,
+      "precision": 1.0,
+      "recall": 0.9048,
+      "sensitivity": 0.9048,
+      "specificity": 1.0,
+      "f1_score": 0.95,
+      "roc_auc": 0.9947,
+      "confusion_matrix": {
+        "tn": 72,
+        "fp": 0,
+        "fn": 4,
+        "tp": 38,
+        "matrix": [
+          [
+            72,
+            0
+          ],
+          [
+            4,
+            38
+          ]
+        ]
+      },
+      "roc_curve": [
+        {
+          "fpr": 0.0,
+          "tpr": 0.0,
+          "threshold": 1.0
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.0238,
+          "threshold": 0.9996
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.0714,
+          "threshold": 0.9996
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.1429,
+          "threshold": 0.9996
+        },
+        {
+          "fpr": 0.0,
+          "tpr": 0.9048,
+          "threshold": 0.7933
+        },
+        {
+          "fpr": 0.0278,
+          "tpr": 0.9048,
+          "threshold": 0.0843
+        },
+        {
+          "fpr": 0.0278,
+          "tpr": 0.9762,
+          "threshold": 0.0477
+        },
+        {
+          "fpr": 0.1389,
+          "tpr": 0.9762,
+          "threshold": 0.0081
+        },
+        {
+          "fpr": 0.1389,
+          "tpr": 1.0,
+          "threshold": 0.0077
+        },
+        {
+          "fpr": 0.4167,
+          "tpr": 1.0,
+          "threshold": 0.0007
+        },
+        {
+          "fpr": 0.4583,
+          "tpr": 1.0,
+          "threshold": 0.0007
+        },
+        {
+          "fpr": 0.4722,
+          "tpr": 1.0,
+          "threshold": 0.0007
+        },
+        {
+          "fpr": 0.5,
+          "tpr": 1.0,
+          "threshold": 0.0007
+        },
+        {
+          "fpr": 0.8056,
+          "tpr": 1.0,
+          "threshold": 0.0004
+        },
+        {
+          "fpr": 0.8472,
+          "tpr": 1.0,
+          "threshold": 0.0004
+        },
+        {
+          "fpr": 0.9028,
+          "tpr": 1.0,
+          "threshold": 0.0004
+        },
+        {
+          "fpr": 0.9167,
+          "tpr": 1.0,
+          "threshold": 0.0004
+        },
+        {
+          "fpr": 0.9722,
+          "tpr": 1.0,
+          "threshold": 0.0004
+        },
+        {
+          "fpr": 1.0,
+          "tpr": 1.0,
+          "threshold": 0.0003
+        }
+      ],
+      "fn_analysis": {
+        "false_negatives_count": 4,
+        "false_positives_count": 0,
+        "true_positives_count": 38,
+        "true_negatives_count": 72,
+        "false_negative_rate": 9.52,
+        "sensitivity_percentage": 90.48,
+        "clinical_impact_note": "In clinical screening, False Negatives (predicting Benign when actual is Malignant) carry severe risks of delayed treatment. High Recall / Sensitivity (>95%) minimizes undetected malignant cases."
+      },
+      "cv_roc_auc_mean": 0.9908,
+      "cv_roc_auc_std": 0.0055,
+      "feature_importances": {
+        "mean radius": 0.0002,
+        "mean texture": 0.0314,
+        "mean perimeter": 0.0,
+        "mean area": 0.0151,
+        "mean smoothness": 0.001,
+        "mean compactness": 0.0039,
+        "mean concavity": 0.0028,
+        "mean concave points": 0.1541,
+        "mean symmetry": 0.0011,
+        "mean fractal dimension": 0.0,
+        "radius error": 0.002,
+        "texture error": 0.0039,
+        "perimeter error": 0.0028,
+        "area error": 0.0141,
+        "smoothness error": 0.0034,
+        "compactness error": 0.0037,
+        "concavity error": 0.0014,
+        "concave points error": 0.0,
+        "symmetry error": 0.0004,
+        "fractal dimension error": 0.0027,
+        "worst radius": 0.0544,
+        "worst texture": 0.0278,
+        "worst perimeter": 0.5295,
+        "worst area": 0.0252,
+        "worst smoothness": 0.0114,
+        "worst compactness": 0.0017,
+        "worst concavity": 0.0189,
+        "worst concave points": 0.0812,
+        "worst symmetry": 0.0015,
+        "worst fractal dimension": 0.0041
+      }
+    }
+  }
+}

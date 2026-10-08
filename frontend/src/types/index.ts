@@ -1,154 +1,98 @@
-export type NavigationTab = 
-  | 'overview'
-  | 'threat-detection'
-  | 'ai-content'
-  | 'fake-account'
-  | 'phishing'
-  | 'bot-detection'
-  | 'deepfake'
-  | 'attack-map'
-  | 'alerts'
-  | 'analytics'
-  | 'settings'
-  | 'landing';
+export interface FeatureContribution {
+  feature: string;
+  value: number;
+  impact: number;
+  signed_impact: number;
+  direction: 'Malignant' | 'Benign';
+}
 
-export type ThreatSeverity = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'SAFE';
-
-export type ThreatCategory = 
-  | 'phishing'
-  | 'malware'
-  | 'bot'
-  | 'account'
-  | 'deepfake'
-  | 'ai-generated'
-  | 'ddos'
-  | 'zero-day';
-
-export interface UnifiedThreatResult {
-  inputType: 'text' | 'url' | 'image' | 'video' | 'social' | 'account';
-  threatLevel: ThreatSeverity;
-  riskScore: number;
+export interface PredictionResult {
+  prediction: 'Benign' | 'Malignant';
+  is_malignant: boolean;
   confidence: number;
-  classification: string;
-  explanation: string;
-  indicators: string[];
-  recommendation: string;
-  evaluatedAt: string;
-  targetSubject: string;
-}
-
-export interface AIContentAnalysisResult {
-  aiProbability: number;
-  humanProbability: number;
-  confidence: number;
-  perplexityScore: number;
-  burstinessScore: number;
-  indicators: { label: string; score: number; status: 'warning' | 'normal' }[];
-  summary: string;
-  syntaxPattern: string;
-}
-
-export interface FakeAccountResult {
-  handle: string;
-  platform: string;
-  riskScore: number;
-  classification: string;
-  accountAgeDays: number;
-  profileCompleteness: number; // percentage
-  followerFollowingRatio: number;
-  riskFactors: { name: string; severity: 'high' | 'medium' | 'low'; description: string }[];
-  verdict: string;
-}
-
-export interface PhishingScanResult {
-  urlOrMessage: string;
-  urlStatus: 'Suspicious' | 'Malicious' | 'Clean';
-  riskLevel: ThreatSeverity;
-  riskScore: number;
-  domainAge: string;
-  httpsStatus: boolean;
-  domainEntropy: number; // 0-5.0
-  redirectCount: number;
-  typosquattingMatch: string | null;
-  suspiciousKeywords: string[];
-  recommendation: string;
-}
-
-export interface BotTrafficMetrics {
-  humanPercent: number;
-  automatedPercent: number;
-  suspiciousPercent: number;
-  requestsPerMin: number;
-  topAnomalies: { ip: string; country: string; rpm: number; botType: string; status: string }[];
-  trafficGraphData: { time: string; human: number; bot: number; suspicious: number }[];
-}
-
-export interface DeepfakeAnalysisResult {
-  fileName: string;
-  mediaType: 'image' | 'video';
-  authenticityScore: number;
-  deepfakeProbability: number;
-  riskLevel: ThreatSeverity;
-  facialInconsistencyScore: number;
-  compressionArtifactScore: number;
-  aiGenerationScore: number;
-  audioLipSyncScore: number;
-  indicators: string[];
+  probabilities: {
+    Benign: number;
+    Malignant: number;
+  };
+  model_used: string;
+  top_features: FeatureContribution[];
+  all_feature_contributions?: FeatureContribution[];
   disclaimer: string;
 }
 
-export interface AttackNode {
-  id: string;
-  source: { name: string; lat: number; lng: number; ip: string; country: string };
-  target: { name: string; lat: number; lng: number; ip: string; country: string };
-  type: ThreatCategory;
-  severity: ThreatSeverity;
-  timestamp: string;
+export interface ConfusionMatrix {
+  tn: number;
+  fp: number;
+  fn: number;
+  tp: number;
+  matrix: number[][];
 }
 
-export interface SecurityAlert {
-  id: string;
-  name: string;
-  timestamp: string;
-  source: string;
-  target: string;
-  riskScore: number;
-  severity: ThreatSeverity;
-  status: 'active' | 'investigating' | 'resolved' | 'ignored';
-  recommendedAction: string;
-  iocs: string[];
-  category: ThreatCategory;
+export interface ROCPoint {
+  fpr: number;
+  tpr: number;
+  threshold: number;
 }
 
-export interface RealTimeFeedEvent {
-  id: string;
-  timestamp: string;
-  threatType: string;
-  severity: ThreatSeverity;
-  source: string;
-  status: 'Flagged' | 'Quarantined' | 'Blocked' | 'Monitoring';
-  action: string;
+export interface FalseNegativeAnalysis {
+  false_negatives_count: number;
+  false_positives_count: number;
+  true_positives_count: number;
+  true_negatives_count: number;
+  false_negative_rate: number;
+  sensitivity_percentage: number;
+  clinical_impact_note: string;
 }
 
-export interface CopilotMessage {
-  id: string;
-  sender: 'user' | 'assistant';
-  text: string;
-  timestamp: string;
-  suggestedActions?: string[];
+export interface ModelMetrics {
+  accuracy: number;
+  precision: number;
+  recall: number;
+  sensitivity: number;
+  specificity: number;
+  f1_score: number;
+  roc_auc: number;
+  cv_roc_auc_mean: number;
+  cv_roc_auc_std: number;
+  confusion_matrix: ConfusionMatrix;
+  roc_curve: ROCPoint[];
+  feature_importances: Record<string, number>;
+  fn_analysis: FalseNegativeAnalysis;
 }
 
-export interface UserProfile {
-  name: string;
-  email: string;
-  role: string;
-  organization: string;
-  avatarUrl: string;
-  twoFactorEnabled: boolean;
-  apiKey: string;
-  notificationPreferences: {
-    criticalEmail: boolean;
-    slackWebhook: boolean;
-    weeklyReport: boolean;
+export interface ModelPerformanceResponse {
+  best_model_name: string;
+  models: Record<string, ModelMetrics>;
+}
+
+export interface DatasetStatistics {
+  total_samples: number;
+  feature_count: number;
+  benign_count: number;
+  malignant_count: number;
+  missing_values: Record<string, number>;
+  duplicate_rows: number;
+  class_balance: {
+    Benign: number;
+    Malignant: number;
   };
+  target_correlations: Record<string, number>;
+  feature_means: Record<string, number>;
+  feature_stds: Record<string, number>;
+  feature_mins: Record<string, number>;
+  feature_maxs: Record<string, number>;
+}
+
+export interface HistoryRecord {
+  id: string;
+  date: string;
+  prediction: 'Benign' | 'Malignant';
+  is_malignant: boolean;
+  confidence: number;
+  benign_prob: number;
+  malignant_prob: number;
+  model_used: string;
+  features_summary: string;
+  sample_inputs: Record<string, number>;
+  top_features?: FeatureContribution[];
 }

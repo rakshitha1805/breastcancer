@@ -1,0 +1,131 @@
+import os
+import sys
+import joblib
+import numpy as np
+import pandas as pd
+import warnings
+warnings.filterwarnings('ignore')
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+try:
+    import shap
+    SHAP_AVAILABLE = True
+except ImportError:
+    SHAP_AVAILABLE = False
+
+FEATURE_NAMES = [
+    "mean radius", "mean texture", "mean perimeter", "mean area",
+    "mean smoothness", "mean compactness", "mean concavity",
+    "mean concave points", "mean symmetry", "mean fractal dimension",
+    "radius error", "texture error", "perimeter error", "area error",
+    "smoothness error", "compactness error", "concavity error",
+    "concave points error", "symmetry error", "fractal dimension error",
+    "worst radius", "worst texture", "worst perimeter", "worst area",
+    "worst smoothness", "worst compactness", "worst concavity",
+    "worst concave points", "worst symmetry", "worst fractal dimension"
+]
+
+def load_prediction_pipeline(model_path="saved_models/best_model.pkl"):
+    if not os.path.exists(model_path):
+        raise FileNotFoundError(f"Model file {model_path} not found. Train model first.")
+    bundle = joblib.load(model_path)
+    return bundle
+
+def predict_sample(sample_dict, model_path="saved_models/best_model.pkl"):
+    bundle = load_prediction_pipeline(model_path)
+    model = bundle["model"]
+    scaler = bundle["scaler"]
+    feature_names = bundle["feature_names"]
+    model_name = bundle.get("model_name", "Best Model")
+    
+    default_means = {
+        "mean radius": 14.127, "mean texture": 19.290, "mean perimeter": 91.969, "mean area": 654.889,
+        "mean smoothness": 0.096, "mean compactness": 0.104, "mean concavity": 0.089, "mean concave points": 0.049,
+        "mean symmetry": 0.181, "mean fractal dimension": 0.063,
+        "radius error": 0.405, "texture error": 1.217, "perimeter error": 2.866, "area error": 40.337,
+        "smoothness error": 0.007, "compactness error": 0.025, "concavity error": 0.032, "concave points error": 0.012,
+        "symmetry error": 0.021, "fractal dimension error": 0.004,
+        "worst radius": 16.269, "worst texture": 25.677, "worst perimeter": 107.261, "worst area": 880.583,
+        "worst smoothness": 0.132, "worst compactness": 0.254, "worst concavity": 0.272, "worst concave points": 0.115,
+        "worst symmetry": 0.290, "worst fractal dimension": 0.084
+    }
+
+    input_data = {}
+    for fn in feature_names:
+        if fn in sample_dict and sample_dict[fn] is not None:
+            input_data[fn] = float(sample_dict[fn])
+        elif fn.startswith("worst ") and fn.replace("worst ", "mean ") in sample_dict:
+            input_data[fn] = float(sample_dict[fn.replace("worst ", "mean ")]) * 1.15
+        elif fn.endswith(" error") and "mean " + fn.replace(" error", "") in sample_dict:
+            input_data[fn] = float(sample_dict["mean " + fn.replace(" error", "")]) * 0.03
+        else:
+            input_data[fn] = default_means.get(fn, 0.0)
+            
+    input_df = pd.DataFrame([input_data], columns=feature_names)
+    input_scaled = scaler.transform(input_df)
+    
+    # Model prediction
+    pred_class = int(model.predict(input_scaled)[0])
+    
+    if hasattr(model, "predict_proba"):
+        probs = model.predict_proba(input_scaled)[0]
+        prob_benign = float(probs[0])
+        prob_malignant = float(probs[1])
+    else:
+        prob_malignant = float(pred_class)
+        prob_benign = 1.0 - prob_malignant
+        
+    confidence = float(max(prob_benign, prob_malignant))
+    diagnosis_str = "Malignant" if pred_class == 1 else "Benign"
+    
+    # Calculate Feature Importance / SHAP values for local explainability
+    feature_contributions = []
+    
+    # Get feature weights / importances from model
+    if hasattr(model, "coef_"):
+        weights = model.coef_[0]
+    elif hasattr(model, "feature_importances_"):
+        weights = model.feature_importances_
+    else:
+        weights = np.ones(len(feature_names))
+
+    # Calculate direction and magnitude based on scaled deviation and model weights
+    scaled_values = input_scaled[0]
+    
+    for fn, orig_val, scaled_val, weight in zip(feature_names, input_df.iloc[0], scaled_values, weights):
+        # Impact is how much this scaled feature pushes towards Malignant vs Benign
+        impact = float(weight * scaled_val)
+        direction = "Malignant" if impact > 0 else "Benign"
+        
+        feature_contributions.append({
+            "feature": fn,
+            "value": round(float(orig_val), 4),
+            "impact": round(float(abs(impact)), 4),
+            "signed_impact": round(float(impact), 4),
+            "direction": direction
+        })
+
+    # Sort contributions by absolute impact magnitude
+    feature_contributions.sort(key=lambda x: x["impact"], reverse=True)
+    top_contributions = feature_contributions[:10]
+
+    disclaimer = (
+        "This prediction is generated by a machine-learning model for educational "
+        "and research purposes. It is not a medical diagnosis. Please consult a "
+        "qualified healthcare professional for clinical evaluation."
+    )
+
+    return {
+        "prediction": diagnosis_str,
+        "is_malignant": pred_class == 1,
+        "confidence": round(confidence * 100, 2),
+        "probabilities": {
+            "Benign": round(prob_benign * 100, 2),
+            "Malignant": round(prob_malignant * 100, 2)
+        },
+        "model_used": model_name,
+        "top_features": top_contributions,
+        "all_feature_contributions": feature_contributions,
+        "disclaimer": disclaimer
+    }

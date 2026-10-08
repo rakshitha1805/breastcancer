@@ -1,0 +1,125 @@
+[
+  {
+    "id": "CASE-1003",
+    "date": "2026-10-09 00:29:11",
+    "prediction": "Benign",
+    "is_malignant": false,
+    "confidence": 55.16,
+    "benign_prob": 55.16,
+    "malignant_prob": 44.84,
+    "model_used": "Logistic Regression",
+    "features_summary": "Radius: 17.99, Texture: 10.38, Perimeter: 122.8",
+    "sample_inputs": {
+      "mean radius": 17.99,
+      "mean texture": 10.38,
+      "mean perimeter": 122.8,
+      "mean area": 1001.0
+    },
+    "top_features": [
+      {
+        "feature": "worst texture",
+        "value": 11.937,
+        "impact": 3.2985,
+        "signed_impact": -3.2985,
+        "direction": "Benign"
+      },
+      {
+        "feature": "mean texture",
+        "value": 10.38,
+        "impact": 1.0168,
+        "signed_impact": -1.0168,
+        "direction": "Benign"
+      },
+      {
+        "feature": "worst radius",
+        "value": 20.6885,
+        "impact": 0.7946,
+        "signed_impact": 0.7946,
+        "direction": "Malignant"
+      },
+      {
+        "feature": "worst perimeter",
+        "value": 141.22,
+        "impact": 0.7066,
+        "signed_impact": 0.7066,
+        "direction": "Malignant"
+      },
+      {
+        "feature": "texture error",
+        "value": 0.3114,
+        "impact": 0.6697,
+        "signed_impact": 0.6697,
+        "direction": "Malignant"
+      },
+      {
+        "feature": "radius error",
+        "value": 0.5397,
+        "impact": 0.5468,
+        "signed_impact": 0.5468,
+        "direction": "Malignant"
+      },
+      {
+        "feature": "mean perimeter",
+        "value": 122.8,
+        "impact": 0.4375,
+        "signed_impact": 0.4375,
+        "direction": "Malignant"
+      },
+      {
+        "feature": "mean area",
+        "value": 1001.0,
+        "impact": 0.4172,
+        "signed_impact": 0.4172,
+        "direction": "Malignant"
+      },
+      {
+        "feature": "worst area",
+        "value": 1151.15,
+        "impact": 0.4034,
+        "signed_impact": 0.4034,
+        "direction": "Malignant"
+      },
+      {
+        "feature": "mean radius",
+        "value": 17.99,
+        "impact": 0.3863,
+        "signed_impact": 0.3863,
+        "direction": "Malignant"
+      }
+    ]
+  },
+  {
+    "id": "CASE-1001",
+    "date": "2026-10-09 00:29:11",
+    "prediction": "Malignant",
+    "is_malignant": true,
+    "confidence": 96.4,
+    "benign_prob": 3.6,
+    "malignant_prob": 96.4,
+    "model_used": "Logistic Regression",
+    "features_summary": "Radius: 17.99, Texture: 10.38, Perimeter: 122.8",
+    "sample_inputs": {
+      "mean radius": 17.99,
+      "mean texture": 10.38,
+      "mean perimeter": 122.8,
+      "mean area": 1001.0
+    }
+  },
+  {
+    "id": "CASE-1002",
+    "date": "2026-10-09 00:29:11",
+    "prediction": "Benign",
+    "is_malignant": false,
+    "confidence": 98.2,
+    "benign_prob": 98.2,
+    "malignant_prob": 1.8,
+    "model_used": "Logistic Regression",
+    "features_summary": "Radius: 13.54, Texture: 14.36, Perimeter: 87.46",
+    "sample_inputs": {
+      "mean radius": 13.54,
+      "mean texture": 14.36,
+      "mean perimeter": 87.46,
+      "mean area": 566.3
+    }
+  }
+]

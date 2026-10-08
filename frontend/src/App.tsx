@@ -1,176 +1,99 @@
-import React, { useState } from 'react';
-import { 
-  NavigationTab, 
-  UserProfile, 
-  SecurityAlert, 
-  UnifiedThreatResult, 
-  RealTimeFeedEvent 
-} from './types';
-import { 
-  INITIAL_USER_PROFILE, 
-  DEFAULT_SECURITY_SCORE, 
-  INITIAL_SUMMARY_STATS, 
-  INITIAL_REALTIME_FEED,
-  INITIAL_ALERTS
-} from './services/mockData';
-import { analyzeUnifiedInput } from './services/cyberEngine';
+import React, { useState, useEffect } from 'react';
+import { Navbar } from './components/Navbar';
+import { Footer } from './components/Footer';
+import { Dashboard } from './pages/Dashboard';
+import { SinglePrediction } from './pages/SinglePrediction';
+import { ModelPerformance } from './pages/ModelPerformance';
+import { DatasetAnalysis } from './pages/DatasetAnalysis';
+import { ModelTraining } from './pages/ModelTraining';
+import { PredictionHistory } from './pages/PredictionHistory';
+import { ResearchProjectDoc } from './pages/ResearchProjectDoc';
+import { getModelPerformanceApi, getDatasetStatisticsApi, getHistoryApi } from './services/api';
+import { ModelPerformanceResponse, DatasetStatistics, HistoryRecord } from './types';
 
-import { Navbar } from './components/common/Navbar';
-import { Sidebar } from './components/common/Sidebar';
-import { DemoDisclaimerBanner } from './components/common/DemoDisclaimerBanner';
-import { CyberShieldCopilot } from './components/copilot/CyberShieldCopilot';
-import { InvestigateModal } from './components/modals/InvestigateModal';
-import { AuthModal } from './components/modals/AuthModal';
+export const App: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<string>('dashboard');
+  const [darkMode, setDarkMode] = useState<boolean>(false);
 
-import { LandingPage } from './pages/LandingPage';
-import { DashboardOverview } from './pages/DashboardOverview';
-import { ThreatDetectionPage } from './pages/ThreatDetectionPage';
-import { AIContentDetectionPage } from './pages/AIContentDetectionPage';
-import { FakeAccountDetectionPage } from './pages/FakeAccountDetectionPage';
-import { PhishingScannerPage } from './pages/PhishingScannerPage';
-import { BotDetectionPage } from './pages/BotDetectionPage';
-import { DeepfakeDetectionPage } from './pages/DeepfakeDetectionPage';
-import { AttackVisualizationPage } from './pages/AttackVisualizationPage';
-import { AlertsPage } from './pages/AlertsPage';
-import { AnalyticsPage } from './pages/AnalyticsPage';
-import { SettingsPage } from './pages/SettingsPage';
+  const [performanceData, setPerformanceData] = useState<ModelPerformanceResponse | null>(null);
+  const [datasetStats, setDatasetStats] = useState<DatasetStatistics | null>(null);
+  const [history, setHistory] = useState<HistoryRecord[]>([]);
 
-export function App() {
-  const [activeTab, setActiveTab] = useState<NavigationTab>('landing');
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [isCopilotOpen, setIsCopilotOpen] = useState(false);
-  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  useEffect(() => {
+    // Dark mode toggle effect
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
 
-  const [user, setUser] = useState<UserProfile>(INITIAL_USER_PROFILE);
-  const [securityScore, setSecurityScore] = useState(DEFAULT_SECURITY_SCORE);
-  const [stats, setStats] = useState(INITIAL_SUMMARY_STATS);
-  const [feedEvents, setFeedEvents] = useState<RealTimeFeedEvent[]>(INITIAL_REALTIME_FEED);
-  
-  const [investigateItem, setInvestigateItem] = useState<SecurityAlert | UnifiedThreatResult | null>(null);
-  const [currentScanResult, setCurrentScanResult] = useState<UnifiedThreatResult | null>(null);
-
-  const activeAlertCount = INITIAL_ALERTS.filter((a) => a.status === 'active').length;
-
-  const handleQuickSearch = (query: string) => {
-    const res = analyzeUnifiedInput(query, 'url');
-    setCurrentScanResult(res);
-    setActiveTab('threat-detection');
-  };
-
-  const handleRunScan = (res: UnifiedThreatResult) => {
-    setCurrentScanResult(res);
-  };
+  useEffect(() => {
+    // Fetch initial data
+    const loadData = async () => {
+      try {
+        const [perf, stats, hist] = await Promise.all([
+          getModelPerformanceApi(),
+          getDatasetStatisticsApi(),
+          getHistoryApi()
+        ]);
+        setPerformanceData(perf);
+        setDatasetStats(stats);
+        setHistory(hist.history || []);
+      } catch (err) {
+        console.error('Data loading error:', err);
+      }
+    };
+    loadData();
+  }, [activeTab]);
 
   return (
-    <div className="min-h-screen bg-[#070A11] text-slate-100 font-sans flex flex-col selection:bg-cyan-500 selection:text-black">
-      {/* Top Navbar */}
-      <Navbar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        user={user}
-        toggleCopilot={() => setIsCopilotOpen(!isCopilotOpen)}
-        isCopilotOpen={isCopilotOpen}
-        alertCount={activeAlertCount}
-        onQuickSearch={handleQuickSearch}
-        onOpenAuth={() => setIsAuthOpen(true)}
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200">
+      <Navbar 
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab} 
+        darkMode={darkMode} 
+        setDarkMode={setDarkMode} 
       />
 
-      {/* Main View Area */}
-      {activeTab === 'landing' ? (
-        <main className="flex-1">
-          <LandingPage
-            setActiveTab={setActiveTab}
-            onRunScan={handleRunScan}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {activeTab === 'dashboard' && (
+          <Dashboard 
+            performanceData={performanceData} 
+            datasetStats={datasetStats} 
+            history={history} 
+            onNavigate={setActiveTab} 
           />
-        </main>
-      ) : (
-        <div className="flex-1 flex overflow-hidden">
-          {/* SOC Navigation Sidebar */}
-          <Sidebar
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            collapsed={sidebarCollapsed}
-            setCollapsed={setSidebarCollapsed}
-            alertCount={activeAlertCount}
-          />
+        )}
 
-          {/* Main Dashboard Content Body */}
-          <main className="flex-1 overflow-y-auto flex flex-col bg-[#070A11]">
-            <DemoDisclaimerBanner />
+        {activeTab === 'predict' && (
+          <SinglePrediction />
+        )}
 
-            <div className="p-4 sm:p-6 lg:p-8 flex-1 max-w-7xl w-full mx-auto space-y-6">
-              {activeTab === 'overview' && (
-                <DashboardOverview
-                  setActiveTab={setActiveTab}
-                  securityScore={securityScore}
-                  stats={stats}
-                  feedEvents={feedEvents}
-                  onInvestigateAlert={(item) => setInvestigateItem(item)}
-                />
-              )}
+        {activeTab === 'performance' && (
+          <ModelPerformance performanceData={performanceData} />
+        )}
 
-              {activeTab === 'threat-detection' && (
-                <ThreatDetectionPage
-                  initialResult={currentScanResult}
-                  onRunScan={handleRunScan}
-                  onInvestigate={(res) => setInvestigateItem(res)}
-                />
-              )}
+        {activeTab === 'dataset' && (
+          <DatasetAnalysis datasetStats={datasetStats} />
+        )}
 
-              {activeTab === 'ai-content' && <AIContentDetectionPage />}
+        {activeTab === 'training' && (
+          <ModelTraining />
+        )}
 
-              {activeTab === 'fake-account' && <FakeAccountDetectionPage />}
+        {activeTab === 'history' && (
+          <PredictionHistory />
+        )}
 
-              {activeTab === 'phishing' && <PhishingScannerPage />}
+        {activeTab === 'paper' && (
+          <ResearchProjectDoc />
+        )}
+      </main>
 
-              {activeTab === 'bot-detection' && <BotDetectionPage />}
-
-              {activeTab === 'deepfake' && <DeepfakeDetectionPage />}
-
-              {activeTab === 'attack-map' && <AttackVisualizationPage />}
-
-              {activeTab === 'alerts' && (
-                <AlertsPage onInvestigate={(alert) => setInvestigateItem(alert)} />
-              )}
-
-              {activeTab === 'analytics' && <AnalyticsPage />}
-
-              {activeTab === 'settings' && (
-                <SettingsPage
-                  user={user}
-                  onUpdateUser={(updated) => setUser(updated)}
-                  onOpenAuth={() => setIsAuthOpen(true)}
-                />
-              )}
-            </div>
-          </main>
-        </div>
-      )}
-
-      {/* Slide-Over CyberShield Copilot Assistant */}
-      <CyberShieldCopilot
-        isOpen={isCopilotOpen}
-        onClose={() => setIsCopilotOpen(false)}
-        setActiveTab={setActiveTab}
-      />
-
-      {/* Investigation Details Modal */}
-      <InvestigateModal
-        targetAlert={investigateItem}
-        onClose={() => setInvestigateItem(null)}
-        onResolve={(id) => {
-          setInvestigateItem(null);
-        }}
-      />
-
-      {/* Authentication Modal */}
-      <AuthModal
-        isOpen={isAuthOpen}
-        onClose={() => setIsAuthOpen(false)}
-        onLoginSuccess={(loggedUser) => setUser(loggedUser)}
-      />
+      <Footer />
     </div>
   );
-}
+};
 
 export default App;

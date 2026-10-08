@@ -1,156 +1,141 @@
-# CodeGuard AI - AI-Powered Code Review Assistant & Security Auditor
+# Breast Cancer Detection Using Machine Learning
 
-![CodeGuard AI Banner](https://img.shields.io/badge/CodeGuard-AI-3B82F6?style=for-the-badge&logo=shieldcheck&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Gemini API](https://img.shields.io/badge/Google_Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white)
+A modern, professional web application designed for educational and research decision-support purposes to evaluate nuclear morphometry measurements from digitized Fine-Needle Aspirates (FNA) of breast masses.
 
-**CodeGuard AI** is a full-stack, enterprise-grade AI-Powered Code Review Platform that integrates with GitHub Pull Requests to deliver automated code quality reviews, security vulnerability scanning, architectural principle enforcement (SOLID), and executive PDF audit reports beyond traditional linting tools.
+> **Important Disclaimer:** This application is an **AI/ML decision-support and research prototype**, not a clinical diagnosis tool or replacement for a qualified healthcare professional. Do not use for medical diagnosis without prospective clinical validation.
 
 ---
 
-## 🌟 Core Features
+## 🌟 Key Features
 
-### 1. GitHub Pull Request Integration
-- **OAuth & Webhooks**: Connects to GitHub repositories via OAuth and listens to Pull Request webhooks (`opened`, `synchronize`, `reopened`).
-- **Automated Review Trigger**: Triggers code analysis on incoming PR events.
-- **GitHub Review Comments**: Posts structured review summary comments and status checks directly back to GitHub PRs.
-
-### 2. AI Code Analysis Engine
-- **Diff & Code Inspection**: Scans changed files and diff hunks across multiple languages (Python, TypeScript/JavaScript, Java, Go, C++).
-- **Vulnerability & Smell Detection**:
-  - Security vulnerabilities (SQL Injection, Cross-Site Scripting, Exposed API keys/secrets).
-  - Code smells, long parameter lists, magic numbers, and unhandled async promises.
-  - Performance bottlenecks (N+1 database query detection inside iteration loops).
-- **Automated Refactoring**: Provides explanations, why the issue matters, and proposed fix snippets.
-
-### 3. Architectural Review & SOLID Principles
-- **SOLID Enforcement**: Detects Single Responsibility Principle (SRP) and Dependency Inversion (DIP) violations.
-- **Coupling & Cohesion**: Identifies tight coupling, god classes, and global state mutations.
-- **Design Pattern Recommendations**: Suggests design patterns (Factory, Strategy, Repository, Dependency Injection).
-
-### 4. Security Scanner
-- **Secret & API Key Detection**: Scans for AWS keys, Stripe secret keys, OpenAI API keys, RSA private keys, and connection strings.
-- **OWASP Top 10 Checks**: SQLi, XSS, Command Injection, Path Traversal, and Insecure Deserialization.
-- **Dependency Vulnerabilities**: Scans `requirements.txt` and `package.json` for known vulnerable libraries.
-- **Risk Score Calculation**: Computes 0-100 risk score per finding and overall PR security rating.
-
-### 5. Developer Dashboard & UI
-- **Metrics Command Center**: Overall health score, security risk score, quality score, and technical debt tracking.
-- **Interactive Code Diff Viewer**: Side-by-side view with inline AI review comment cards.
-- **AI Developer Assistant Chat**: Slide-over drawer allowing developers to chat with AI about PR findings.
-
-### 6. Executive PDF Report Generation
-- Downloadable PDF reports generated via `ReportLab` containing executive summaries, audit score tables, and detailed findings lists.
+1. **Intelligent Prediction Engine**: Analyzes nuclear morphometry metrics (Radius, Texture, Perimeter, Area, Smoothness, Compactness, Concavity, Concave Points, Symmetry, Fractal Dimension) and predicts **Benign** vs **Malignant** with confidence percentages.
+2. **Explainable AI (SHAP)**: Visual feature importance and local contribution breakdown showing how each clinical measurement influences the prediction towards Benign or Malignant.
+3. **Multi-Model Benchmark (6 Algorithms)**:
+   - Logistic Regression
+   - Decision Tree
+   - Random Forest
+   - Support Vector Machine (SVM)
+   - K-Nearest Neighbors (KNN)
+   - Gradient Boosting
+4. **Diagnostic Metrics & False-Negative Emphasis**: Evaluates Accuracy, Precision, Recall / Sensitivity, Specificity, F1-Score, ROC-AUC, Confusion Matrix, and ROC Curves with a dedicated emphasis on minimizing False Negatives.
+5. **Interactive Dashboard**: Real-time stats overview, class distribution analysis, correlation heatmap, recent predictions, and model performance rankings.
+6. **Model Training Page**: Authorized interface to upload custom CSV datasets, configure preprocessing scaling (StandardScaler), set train/test ratios, select ML algorithms, train models live, and save the active model.
+7. **Prediction History & Export**: De-identified historical log with search, diagnosis filtering, detail inspection modals, and export capabilities to CSV and JSON.
+8. **Academic Research Paper**: Full documentation page with Abstract, Introduction, Problem Statement, Literature Survey, Methodology, Algorithms, System Architecture, Limitations, Future Scope, and References.
 
 ---
 
-## 🛠️ Technology Stack
-
-- **Frontend**: React.js, TypeScript, Tailwind CSS, Lucide Icons, Vite
-- **Backend**: Python FastAPI, SQLAlchemy, Pydantic, WebSockets, Uvicorn
-- **AI Layer**: Google Gemini API (`google-genai`), built-in heuristic AST fallback engine
-- **Database**: SQLite (default zero-config) / PostgreSQL (production)
-- **Reporting**: ReportLab PDF Generator
-- **DevOps**: Docker, Docker Compose, GitHub Actions CI/CD
-
----
-
-## 📁 Project Structure
+## 🏗️ Project Architecture
 
 ```
-main project/
-├── backend/
-│   ├── app/
-│   │   ├── api/             # API Router endpoints (Auth, Webhooks, PRs, Security, Reports, Chat)
-│   │   ├── models/          # SQLAlchemy database models (User, Repo, PR, Review, Security, Arch, Report)
-│   │   ├── schemas/         # Pydantic schemas
-│   │   ├── services/        # Security Scanner, Architecture Analyzer, AI Engine, Report Generator
-│   │   ├── utils/           # Diff Parser
-│   │   ├── config.py        # System configuration & environment settings
-│   │   ├── database.py      # Database session setup
-│   │   └── main.py          # FastAPI application entry point
-│   ├── seed_data.py         # Database seeder script
-│   ├── requirements.txt     # Backend Python dependencies
-│   └── Dockerfile           # Backend container definition
+Breast-Cancer-Detection/
+│
 ├── frontend/
 │   ├── src/
-│   │   ├── components/      # Navbar, Sidebar, ScoreBadge, SeverityBadge, DiffViewer, ReviewCommentCard, AIChatDrawer
-│   │   ├── pages/           # Dashboard, Repositories, PullRequests, PRDetail, SecurityFindings, Architecture, Analytics, Settings
-│   │   ├── services/        # Axios API client
-│   │   ├── types/           # TypeScript interfaces
-│   │   ├── App.tsx          # Router configuration
-│   │   └── main.tsx         # React entry point
-│   ├── package.json         # Frontend dependencies
-│   ├── vite.config.ts       # Vite configuration
-│   └── Dockerfile           # Nginx multi-stage build Dockerfile
-├── docs/                    # API Documentation, GitHub Setup, Deployment Guide, Architecture
-├── docker-compose.yml       # Docker Compose setup
-├── .github/workflows/       # GitHub Actions CI workflow
-└── README.md                # Project documentation
+│   │   ├── components/
+│   │   │   ├── Navbar.tsx
+│   │   │   ├── Footer.tsx
+│   │   │   ├── DisclaimerBanner.tsx
+│   │   │   ├── FeatureImportanceChart.tsx
+│   │   │   ├── ConfusionMatrixView.tsx
+│   │   │   ├── ROCCurveView.tsx
+│   │   │   └── SampleDataPresets.tsx
+│   │   ├── pages/
+│   │   │   ├── Dashboard.tsx
+│   │   │   ├── SinglePrediction.tsx
+│   │   │   ├── ModelPerformance.tsx
+│   │   │   ├── DatasetAnalysis.tsx
+│   │   │   ├── ModelTraining.tsx
+│   │   │   ├── PredictionHistory.tsx
+│   │   │   └── ResearchProjectDoc.tsx
+│   │   ├── services/
+│   │   │   └── api.ts
+│   │   ├── types/
+│   │   │   └── index.ts
+│   │   ├── App.tsx
+│   │   ├── main.tsx
+│   │   └── index.css
+│   └── package.json
+│
+├── backend/
+│   ├── main.py              # FastAPI REST Server
+│   ├── history_store.py     # Prediction history persistence
+│   └── requirements.txt
+│
+├── ml/
+│   ├── dataset/
+│   │   └── wdbc.csv          # Wisconsin Diagnostic Breast Cancer Dataset
+│   ├── generate_wdbc_dataset.py
+│   ├── preprocessing.py     # Missing values, scaling, stratified split
+│   ├── train.py             # Multi-model training & 5-fold CV
+│   ├── evaluate.py          # Metrics, confusion matrix, ROC data
+│   └── predict.py           # Single sample inference & SHAP explainability
+│
+├── saved_models/
+│   ├── best_model.pkl        # Active model pipeline bundle
+│   ├── all_models.pkl
+│   ├── model_metrics.json    # Benchmark metrics
+│   └── dataset_stats.json    # EDA statistics
+│
+├── notebooks/
+│   ├── exploratory_analysis.ipynb   # Complete Jupyter Notebook
+│   └── create_notebook.py
+│
+├── start_app.py              # One-click startup script
+└── README.md
 ```
 
 ---
 
-## 🚀 Quick Start Guide
+## ⚡ Quick Start & Installation
 
 ### Prerequisites
-- Python 3.10+
-- Node.js 18+ and npm
+- Python 3.9+
+- Node.js 18+
 
-### 1. Backend Setup & Database Seeding
-
+### 1. Install Backend Dependencies
 ```bash
-# Navigate to backend directory
-cd backend
-
-# Install dependencies
-python -m pip install -r requirements.txt bcrypt
-
-# Seed database with demo repositories, PRs, and security findings
-python seed_data.py
-
-# Start FastAPI backend server
-python -m uvicorn app.main:app --reload --port 8000
+python -m pip install -r backend/requirements.txt
 ```
-Backend API will be running at `http://127.0.0.1:8000`. Swagger API docs available at `http://127.0.0.1:8000/api/v1/docs`.
 
-### 2. Frontend Dashboard Setup
-
+### 2. Install Frontend Dependencies
 ```bash
-# In a new terminal, navigate to frontend directory
 cd frontend
-
-# Install dependencies
 npm install
-
-# Start Vite dev server
-npm run dev
+cd ..
 ```
-Frontend Dashboard will open at `http://localhost:5173`.
 
----
-
-## 🐳 Docker Deployment
-
-To run the entire full-stack application (PostgreSQL + FastAPI + React/Nginx) with Docker Compose:
-
+### 3. Run the Application
+Launch both backend REST API and frontend UI with a single command:
 ```bash
-docker-compose up -d --build
+python start_app.py
 ```
 
----
-
-## 📄 Documentation
-
-- [API Documentation](docs/API_DOCUMENTATION.md)
-- [GitHub Webhook & OAuth Setup](docs/GITHUB_INTEGRATION_SETUP.md)
-- [Deployment Guide](docs/DEPLOYMENT_GUIDE.md)
-- [Architecture Overview](docs/ARCHITECTURE.md)
+- **Frontend Application**: `http://localhost:5173`
+- **FastAPI REST API Docs (Swagger)**: `http://127.0.0.1:8000/docs`
 
 ---
 
-## 📄 License
-Released under the MIT License. Developed for CodeGuard AI Platform.
+## 📊 REST API Endpoints
+
+- `POST /api/predict`: Runs sample classification & SHAP explainability analysis.
+- `GET /api/model-performance`: Returns 6-model benchmark metrics, confusion matrices, and ROC curves.
+- `GET /api/dataset-statistics`: Returns WDBC dataset EDA, class balance, and feature correlations.
+- `POST /api/train`: Re-trains models on uploaded or default dataset.
+- `GET /api/history`: Retrieves prediction history log (with search and filter query parameters).
+- `GET /api/history/export`: Exports prediction history as CSV or JSON file.
+
+---
+
+## 🔮 Future Scope
+
+1. **Deep Learning Mammography**: Integration of Convolutional Neural Networks (CNNs) for raw mammography image analysis.
+2. **External Multi-Center Validation**: Testing on larger multi-institutional patient cohorts.
+3. **Federated Learning**: Decentralized privacy-preserving training across hospital networks.
+4. **Clinical Decision Support System (CDSS)**: Interoperable EHR integration via FHIR protocols.
+
+---
+
+## 📜 License & Disclaimers
+
+Distributed for educational, academic, and research decision-support evaluation. Not for clinical diagnosis.

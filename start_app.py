@@ -1,49 +1,49 @@
 import os
 import sys
-import webbrowser
-import time
 import subprocess
+import time
 
 def main():
-    print("=" * 60)
-    print("  [CODEGUARD AI] All-in-One Application Launcher")
-    print("=" * 60)
-
-    project_root = os.path.dirname(os.path.abspath(__file__))
-    backend_dir = os.path.join(project_root, "backend")
-    frontend_dist = os.path.join(project_root, "frontend", "dist")
-
-    # 1. Seed Database if needed
-    print("\n[1/3] Checking and seeding database...")
-    sys.path.insert(0, backend_dir)
-    try:
-        from seed_data import seed
-        seed()
-    except Exception as e:
-        print(f"Warning seeding database: {e}")
-
-    # 2. Check Frontend Dist Build
-    if not os.path.exists(frontend_dist):
-        print("\n[2/3] Building React Frontend...")
-        subprocess.run(["npm", "run", "build"], cwd=os.path.join(project_root, "frontend"), shell=True)
+    print("=" * 70)
+    print(" Breast Cancer Detection Using Machine Learning")
+    print(" Educational & Research Decision-Support Application")
+    print("=" * 70)
+    
+    # 1. Train models if missing
+    if not os.path.exists("saved_models/best_model.pkl"):
+        print("\n[ML Core] Training ML models on WDBC dataset...")
+        subprocess.run([sys.executable, "ml/train.py"], check=True)
     else:
-        print("\n[2/3] Frontend build ready in frontend/dist!")
+        print("\n[ML Core] Pre-trained models found in saved_models/")
 
-    # 3. Open Browser automatically after server launches
-    url = "http://localhost:8080"
-    print(f"\n[3/3] Starting Unified CodeGuard AI Server on {url}...")
+    # 2. Start FastAPI Backend Server
+    print("\n[Backend] Starting FastAPI REST Server at http://127.0.0.1:8000...")
+    backend_proc = subprocess.Popen(
+        [sys.executable, "-m", "uvicorn", "backend.main:app", "--host", "127.0.0.1", "--port", "8000"],
+        cwd=os.getcwd()
+    )
 
-    def open_browser():
-        time.sleep(2)
-        print(f"\n[LAUNCH] Opening browser at {url} ...")
-        webbrowser.open(url)
+    # 3. Start Frontend Dev Server
+    print("[Frontend] Starting Vite React Dev Server at http://localhost:5173...")
+    frontend_proc = subprocess.Popen(
+        "npm run dev",
+        shell=True,
+        cwd=os.path.join(os.getcwd(), "frontend")
+    )
 
-    import threading
-    threading.Thread(target=open_browser, daemon=True).start()
+    print("\n" + "=" * 70)
+    print(" Application Successfully Launched!")
+    print(" • Frontend UI: http://localhost:5173")
+    print(" • REST API Docs (Swagger): http://127.0.0.1:8000/docs")
+    print("=" * 70 + "\n")
 
-    # Launch Uvicorn server on port 8080
-    import uvicorn
-    uvicorn.run("app.main:app", host="127.0.0.1", port=8080, reload=False, app_dir=backend_dir)
+    try:
+        backend_proc.wait()
+        frontend_proc.wait()
+    except KeyboardInterrupt:
+        print("\nStopping services...")
+        backend_proc.terminate()
+        frontend_proc.terminate()
 
 if __name__ == "__main__":
     main()
