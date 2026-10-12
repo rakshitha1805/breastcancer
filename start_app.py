@@ -5,16 +5,17 @@ import time
 
 def main():
     print("=" * 70)
-    print(" Breast Cancer Detection Using Machine Learning")
-    print(" Educational & Research Decision-Support Application")
+    print(" Paddy & Modern Rice Mill Dynamic Billing & Accounting System")
+    print(" Real-Time Inward Weighment, Labor Charges & By-Product Accounting")
     print("=" * 70)
     
-    # 1. Train models if missing
-    if not os.path.exists("saved_models/best_model.pkl"):
-        print("\n[ML Core] Training ML models on WDBC dataset...")
-        subprocess.run([sys.executable, "ml/train.py"], check=True)
-    else:
-        print("\n[ML Core] Pre-trained models found in saved_models/")
+    # 1. Initialize SQLite Database
+    try:
+        from backend.ricemill_store import init_db
+        init_db()
+        print("\n[Database] SQLite database initialized at ricemill.db")
+    except Exception as e:
+        print(f"\n[Database] DB check: {e}")
 
     # 2. Start FastAPI Backend Server
     print("\n[Backend] Starting FastAPI REST Server at http://127.0.0.1:8000...")

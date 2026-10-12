@@ -1,48 +1,15 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:15-alpine
-    container_name: codeguard-postgres
-    environment:
-      POSTGRES_USER: codeguard
-      POSTGRES_PASSWORD: codeguard_password
-      POSTGRES_DB: codeguard_db
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U codeguard -d codeguard_db"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-  backend:
+  ricemill-app:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile
-    container_name: codeguard-backend
-    environment:
-      - DATABASE_URL=postgresql://codeguard:codeguard_password@postgres:5432/codeguard_db
-      - SECRET_KEY=codeguard-super-secret-production-key-2026
-      - GITHUB_WEBHOOK_SECRET=codeguard_webhook_secret_key
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    container_name: ricemill-billing-app
     ports:
       - "8000:8000"
-    depends_on:
-      postgres:
-        condition: service_healthy
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: codeguard-frontend
-    ports:
-      - "5173:80"
-    depends_on:
-      - backend
-
-volumes:
-  postgres_data:
+    environment:
+      - PORT=8000
+    volumes:
+      - ./ricemill.db:/app/ricemill.db
+    restart: unless-stopped

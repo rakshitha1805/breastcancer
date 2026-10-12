@@ -1,141 +1,95 @@
-# Breast Cancer Detection Using Machine Learning
+# 🌾 Paddy & Modern Rice Mill Dynamic Billing & Accounting System
 
-A modern, professional web application designed for educational and research decision-support purposes to evaluate nuclear morphometry measurements from digitized Fine-Needle Aspirates (FNA) of breast masses.
-
-> **Important Disclaimer:** This application is an **AI/ML decision-support and research prototype**, not a clinical diagnosis tool or replacement for a qualified healthcare professional. Do not use for medical diagnosis without prospective clinical validation.
+A high-performance, real-time web application engineered for modern rice mills, paddy processing units, and agro-commodity traders. Designed specifically to calculate **inward paddy weighments**, **milling charges**, **labor/handling expenses**, and **by-product realization (bran, broken rice, blower, rejection, gunny)** dynamically every time.
 
 ---
 
-## 🌟 Key Features
+## 🚀 Key Features
 
-1. **Intelligent Prediction Engine**: Analyzes nuclear morphometry metrics (Radius, Texture, Perimeter, Area, Smoothness, Compactness, Concavity, Concave Points, Symmetry, Fractal Dimension) and predicts **Benign** vs **Malignant** with confidence percentages.
-2. **Explainable AI (SHAP)**: Visual feature importance and local contribution breakdown showing how each clinical measurement influences the prediction towards Benign or Malignant.
-3. **Multi-Model Benchmark (6 Algorithms)**:
-   - Logistic Regression
-   - Decision Tree
-   - Random Forest
-   - Support Vector Machine (SVM)
-   - K-Nearest Neighbors (KNN)
-   - Gradient Boosting
-4. **Diagnostic Metrics & False-Negative Emphasis**: Evaluates Accuracy, Precision, Recall / Sensitivity, Specificity, F1-Score, ROC-AUC, Confusion Matrix, and ROC Curves with a dedicated emphasis on minimizing False Negatives.
-5. **Interactive Dashboard**: Real-time stats overview, class distribution analysis, correlation heatmap, recent predictions, and model performance rankings.
-6. **Model Training Page**: Authorized interface to upload custom CSV datasets, configure preprocessing scaling (StandardScaler), set train/test ratios, select ML algorithms, train models live, and save the active model.
-7. **Prediction History & Export**: De-identified historical log with search, diagnosis filtering, detail inspection modals, and export capabilities to CSV and JSON.
-8. **Academic Research Paper**: Full documentation page with Abstract, Introduction, Problem Statement, Literature Survey, Methodology, Algorithms, System Architecture, Limitations, Future Scope, and References.
+1. **100% Dynamic Input & Calculation Engine**:
+   - Zero hardcoded constraints: dynamically adjust party names, lorry numbers, dates, batch numbers, lot numbers, and bag weights every time.
+   - Live recalculation on every keystroke: instantly calculates equivalent 70kg bags (`Total Weight / 70`), milling charge, line-by-line handling costs, recoveries, and net balance.
 
----
+2. **Dual Workflow Modes Supported**:
+   - **Mode A: Single Batch (Vehicle Slip)**
+     - Single vehicle inward weighment (`Paddy Weight`, `Reported Bags`, `Milling Rate`).
+     - Line-by-line labor breakdown: Unloading, Gage Cutting & Dumping, Packing (26kg / 50kg), Bran, Blower, Outturn, Rejection, Shifting & Cutting, Stitching Thread, Gunny, etc.
+     - Realization breakdown: Bran 50kg (`Weight × Rate`), Broken, Rejection, Gunny.
+     - Net balance settlement: `Total Recoveries - Total Charges = Net Payable/Receivable`.
+   - **Mode B: Multi-Load (Consolidated Lot Settlement)**
+     - Inward weighment grid: add 1, 2, 3, 4, ... N lorry loads dynamically.
+     - Automated totals for combined weight (e.g., `135,666 kg`) and combined inward bags.
+     - Separate **Paddy Labor** (Paddy dumping, unloading, shifting) and **Rice Labor** (Rice 26kg, Broken, Bran, BB, 2nd Broken, Rejection, Thread, Outan).
+     - Bran recovery credit deduction (`Weight × Rate`, e.g. `5,500 kg × ₹25.80 = ₹1,41,900.00`).
+     - Consolidated settlement calculation with exact reconciliation.
 
-## 🏗️ Project Architecture
+3. **Dual Comparative View**:
+   - Side-by-side comparative ledger matching the spreadsheet's left (vehicle level) and right (lot level) views for instant audit and verification.
 
-```
-Breast-Cancer-Detection/
-│
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── Navbar.tsx
-│   │   │   ├── Footer.tsx
-│   │   │   ├── DisclaimerBanner.tsx
-│   │   │   ├── FeatureImportanceChart.tsx
-│   │   │   ├── ConfusionMatrixView.tsx
-│   │   │   ├── ROCCurveView.tsx
-│   │   │   └── SampleDataPresets.tsx
-│   │   ├── pages/
-│   │   │   ├── Dashboard.tsx
-│   │   │   ├── SinglePrediction.tsx
-│   │   │   ├── ModelPerformance.tsx
-│   │   │   ├── DatasetAnalysis.tsx
-│   │   │   ├── ModelTraining.tsx
-│   │   │   ├── PredictionHistory.tsx
-│   │   │   └── ResearchProjectDoc.tsx
-│   │   ├── services/
-│   │   │   └── api.ts
-│   │   ├── types/
-│   │   │   └── index.ts
-│   │   ├── App.tsx
-│   │   ├── main.tsx
-│   │   └── index.css
-│   └── package.json
-│
-├── backend/
-│   ├── main.py              # FastAPI REST Server
-│   ├── history_store.py     # Prediction history persistence
-│   └── requirements.txt
-│
-├── ml/
-│   ├── dataset/
-│   │   └── wdbc.csv          # Wisconsin Diagnostic Breast Cancer Dataset
-│   ├── generate_wdbc_dataset.py
-│   ├── preprocessing.py     # Missing values, scaling, stratified split
-│   ├── train.py             # Multi-model training & 5-fold CV
-│   ├── evaluate.py          # Metrics, confusion matrix, ROC data
-│   └── predict.py           # Single sample inference & SHAP explainability
-│
-├── saved_models/
-│   ├── best_model.pkl        # Active model pipeline bundle
-│   ├── all_models.pkl
-│   ├── model_metrics.json    # Benchmark metrics
-│   └── dataset_stats.json    # EDA statistics
-│
-├── notebooks/
-│   ├── exploratory_analysis.ipynb   # Complete Jupyter Notebook
-│   └── create_notebook.py
-│
-├── start_app.py              # One-click startup script
-└── README.md
-```
+4. **Persistent History & Database**:
+   - Save every bill to a local SQLite database (`ricemill.db`).
+   - Search by Party Name, Vehicle Number, Batch Number, or Date.
+   - 1-click re-load into calculator to edit, inspect, or duplicate past settlements.
+
+5. **Printable Invoices & Thermal Slips**:
+   - Print-ready modal designed with `@media print` for standard A4 or 80mm thermal receipt printers.
+   - Includes mill header, customer/vehicle metadata, itemized tables, net amount in words, driver signature, and authorized mill signature.
+
+6. **Custom Tariff & Mill Settings**:
+   - Configure Mill Name, Tagline, Address, Phone, and GSTIN.
+   - Configure mill default tariffs (70kg rate, unloading, packing 26kg/50kg, bran rate, etc.) so new bills start with your customized standard rates every time.
+
+7. **Export Capabilities**:
+   - One-click CSV and Excel export for any individual bill or full database export.
+
+8. **Indian Currency Number-to-Words Converter**:
+   - Auto-generates formal currency text (e.g. `Rupees Six Thousand Seventeen and Twenty-Six Paise Only`).
 
 ---
 
-## ⚡ Quick Start & Installation
+## 📊 Spreadsheet Math Verification
 
-### Prerequisites
-- Python 3.9+
-- Node.js 18+
+The engine has been verified against the provided mill ledger:
 
-### 1. Install Backend Dependencies
-```bash
-python -m pip install -r backend/requirements.txt
-```
+### Single Batch Settlement (Vehicle: TN29BF8709 • Batch 1)
+- **Paddy Inward Weight**: `27,536 kg` (380 reported bags)
+- **Converted 70kg Bags**: `27,536 / 70 = 393.3714 bags`
+- **Paddy Milling Charge (@ ₹100)**: `393.3714 × 100 = ₹39,337.14`
+- **Total Labor & Handling Charges**: `₹45,386.74`
+- **Bran Realization (1,775 kg @ ₹28.96)**: `₹51,404.00`
+- **Net Amount Payable by Mill to Party**: `₹51,404.00 - ₹45,386.74 = ₹6,017.26`
 
-### 2. Install Frontend Dependencies
-```bash
-cd frontend
-npm install
-cd ..
-```
+### Multi-Load Consolidated Settlement (Batch 1 • Lot 500/256bg)
+- **Lorry Loads (4 Trucks)**: `27,500 kg (350 bg) + 34,596 kg (450 bg) + 25,745 kg (650 bg) + 47,825 kg (152 bg)`
+- **Total Consolidated Weight**: `135,666 kg` (1,602 bags)
+- **Converted 70kg Bags**: `135,666 / 70 = 1,938.0857 bags`
+- **Paddy 70kg Milling (@ ₹110)**: `1,938.0857 × 110 = ₹2,13,189.43`
+- **Paddy Handling Labor**: `₹3,610.00`
+- **Rice Handling Labor**: `₹2,049.00`
+- **Total Gross Charges**: `₹2,13,189.43 + ₹3,610.00 + ₹2,049.00 = ₹2,18,848.43`
+- **Bran Credit Deduction (5,500 kg @ ₹25.80)**: `₹1,41,900.00`
+- **Net Amount Due from Party to Mill**: `₹1,41,900.00 - ₹2,18,848.43 = -₹76,948.43`
 
-### 3. Run the Application
-Launch both backend REST API and frontend UI with a single command:
+---
+
+## 🏃 Running the Application
+
+### 1. Launch with One Command
 ```bash
 python start_app.py
 ```
+This automatically launches:
+- **FastAPI REST Server**: `http://127.0.0.1:8000` (API Docs at `http://127.0.0.1:8000/docs`)
+- **React Vite Web UI**: `http://localhost:5173`
 
-- **Frontend Application**: `http://localhost:5173`
-- **FastAPI REST API Docs (Swagger)**: `http://127.0.0.1:8000/docs`
+### 2. Manual Startup
+**Backend**:
+```bash
+uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
+```
 
----
-
-## 📊 REST API Endpoints
-
-- `POST /api/predict`: Runs sample classification & SHAP explainability analysis.
-- `GET /api/model-performance`: Returns 6-model benchmark metrics, confusion matrices, and ROC curves.
-- `GET /api/dataset-statistics`: Returns WDBC dataset EDA, class balance, and feature correlations.
-- `POST /api/train`: Re-trains models on uploaded or default dataset.
-- `GET /api/history`: Retrieves prediction history log (with search and filter query parameters).
-- `GET /api/history/export`: Exports prediction history as CSV or JSON file.
-
----
-
-## 🔮 Future Scope
-
-1. **Deep Learning Mammography**: Integration of Convolutional Neural Networks (CNNs) for raw mammography image analysis.
-2. **External Multi-Center Validation**: Testing on larger multi-institutional patient cohorts.
-3. **Federated Learning**: Decentralized privacy-preserving training across hospital networks.
-4. **Clinical Decision Support System (CDSS)**: Interoperable EHR integration via FHIR protocols.
-
----
-
-## 📜 License & Disclaimers
-
-Distributed for educational, academic, and research decision-support evaluation. Not for clinical diagnosis.
+**Frontend**:
+```bash
+cd frontend
+npm run dev
+```
